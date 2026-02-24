@@ -1,0 +1,9 @@
+[project]
+name = "AssignmentEvaluationAgent"
+version = "0.0.5"
+description = "agent"
+authors = [{ name = "Rajneesh Khare", email = "rajneeshkahre94@gmail.com" }]
+dependencies = [
+    "uipath-langchain>=0.2.0",
+]
+requires-python = ">=3.11"
