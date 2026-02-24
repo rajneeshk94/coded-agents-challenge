@@ -1,0 +1,12 @@
+flowchart TB
+  start([__start__])
+  evaluate(Evaluate Answer)
+  check_anomaly(Check Anomaly)
+  hitl(Faculty Review)
+  finish([__end__])
+
+  start --> evaluate
+  evaluate --> check_anomaly
+  check_anomaly -->|Review not required| finish
+  check_anomaly -->|Review required| hitl
+  hitl --> finish

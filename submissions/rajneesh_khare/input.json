@@ -1,0 +1,4 @@
+{
+    "question": "What are anomalies?",
+    "student_answer": "Anomalies are data points that deviate significantly from the majority of the data. They can indicate errors, rare events, or novel insights. Anomalies can be caused by various factors such as measurement errors, data corruption, or genuine unusual occurrences. Detecting anomalies is important in various fields such as fraud detection, network security, and quality control.",
+}
