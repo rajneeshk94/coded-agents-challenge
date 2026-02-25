@@ -130,13 +130,27 @@ Your submission will be reviewed before merging.
 
 # 📊 Evaluation Criteria
 
-| Criteria              | Weight |
-|-----------------------|--------|
-| Agentic Design        | 30%    |
-| Proper LangGraph Use  | 20%    |
-| UiPath SDK Integration| 20%    |
-| Code Quality          | 20%    |
-| Documentation         | 10%    |
+| Criteria                          | Weight |
+|-----------------------------------|--------|
+| Agentic Design                   | 25%    |
+| Proper LangGraph Usage           | 15%    |
+| UiPath SDK Integration           | 20%    |
+| Code Quality & Structure         | 15%    |
+| Creativity & Usefulness          | 15%    |
+| Documentation & Clarity          | 10%    |
+
+---
+
+# 🎨 Creativity & Usefulness
+
+Your agent should:
+
+- Solve a meaningful real-world problem  
+- Be practical or relatable  
+- Show thoughtful design  
+- Demonstrate innovation beyond basic examples  
+
+Creative and useful solutions will receive higher scores.
 
 ---
 
@@ -163,15 +177,22 @@ Optional but recommended:
 
 You may build agents such as:
 
-- Resume Reviewer Agent
-- Code Review Agent
-- Policy Compliance Agent
-- Risk Assessment Agent
-- Budget Optimization Agent
-- Incident Triage Agent
-- Project Scope Generator Agent
+- 📚 Assignment Evaluation Agent  
+- 📝 Resume Reviewer for Campus Placements  
+- 🎯 Internship Eligibility Checker  
+- 🏠 Hostel Leave Approval Agent  
+- 💰 Student Budget Planning Agent  
+- 📅 Exam Preparation Strategy Agent  
+- 🧾 Project Proposal Reviewer  
+- 🧠 Skill Gap Analyzer for Placements  
+- 📦 Hackathon Idea Validation Agent  
+- 📊 Academic Performance Risk Analyzer  
 
 You are free to innovate beyond these ideas.
+
+You can also refer to this example:
+
+👉 https://github.com/rajneeshk94/LeaveRequestAgent
 
 ---
 
