@@ -111,15 +111,13 @@ git checkout -b submission-yourname
 
 ### Step 4 — Add Your Agent
 
-Create your folder inside:
-    submissions/
-        All required files
+Create your folder inside `submissions/` folder and place all your code files
 
 
 ### Step 5 — Commit & Push
-git add .
-git commit -m "Added my coded agent submission"
-git push origin submission-yourname
+ - git add .
+ - git commit -m "Added my coded agent submission"
+ - git push origin submission-yourname
 
 
 ### Step 6 — Create Pull Request
