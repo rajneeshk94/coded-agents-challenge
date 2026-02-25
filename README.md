@@ -208,6 +208,12 @@ Submissions will be rejected if they:
 
 ---
 
+# 📅 Deadline
+
+12th March 2026
+
+---
+
 Build something intelligent.
 
 Good luck 🚀
