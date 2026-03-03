@@ -1,6 +1,7 @@
 flowchart TB
-  __start__(__start__)
-  generate_report(generate_report)
-  __end__(__end__)
-  __start__ --> generate_report
-  generate_report --> __end__
+    START --> analyze_risk
+    analyze_risk --> generate_plan
+    generate_plan --> self_evaluate_plan
+    self_evaluate_plan -->|good| END
+    self_evaluate_plan -->|poor| improve_plan
+    improve_plan --> END

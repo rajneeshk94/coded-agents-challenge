@@ -36,7 +36,7 @@ This ensures plans are practical, adaptive, and reliable.
 
 ## 🔄 Agent Flow Explanation
 
-### 1️⃣nalyze Risk (`analyze_risk`)
+### Analyze Risk (`analyze_risk`)
 - Calculates days remaining until exams
 - Computes workload factor
 - Determines risk level (low / medium / high)
@@ -46,7 +46,7 @@ This ensures plans are practical, adaptive, and reliable.
 - Creates structured study plan
 - Allocates time across subjects
 
-### elf Evaluation (`self_evaluate_plan`)
+### Self Evaluation (`self_evaluate_plan`)
 - Agent critiques its own generated plan
 - Returns:
   - `good`
@@ -65,7 +65,7 @@ If plan_quality == "poor":
 Else:
 → End
 
-###Improve Plan (`improve_plan`)
+### Improve Plan (`improve_plan`)
 - Refines structure
 - Makes schedule more realistic
 - Strengthens revision plan
@@ -73,22 +73,15 @@ Else:
 ---
 
 ## 🔀 Agent Flow Diagram
-START
-↓
-AnalyzeRisk
-↓
-GeneratePlan
-↓
-SelfEvaluatePlan
-↓
-poor?
-/
-Yes No
-↓ ↓
-Improve END
-↓
-END
-
+```mermaid
+flowchart TB
+    START --> analyze_risk
+    analyze_risk --> generate_plan
+    generate_plan --> self_evaluate_plan
+    self_evaluate_plan -->|good| END
+    self_evaluate_plan -->|poor| improve_plan
+    improve_plan --> END
+```
 ---
 
 ## 🛠️ Tools Used
@@ -104,6 +97,7 @@ END
 ---
 
 ## 🧪 Example Input
+```json
 {
 "subjects": ["Math", "Physics", "Computer Science"],
 "exam_dates": ["2026-03-15", "2026-03-20", "2026-03-25"],
@@ -111,17 +105,17 @@ END
 "daily_hours": 3,
 "weak_subjects": ["Math"]
 }
-
+```
 
 ---
 
 ## 📤 Example Output
 
-
+```json
 {
 "risk_level": "medium",
 "study_plan": "Structured weekly plan with revision strategy..."
-
+```
 
 
 If the plan is weak, the agent automatically improves it before returning the final result.
