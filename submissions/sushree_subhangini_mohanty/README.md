@@ -80,7 +80,7 @@ flowchart TB
     generate_plan --> self_evaluate_plan
     self_evaluate_plan -->|good| END
     self_evaluate_plan -->|poor| improve_plan
-    improve_plan --> END
+    improve_plan --> self_evaluate_plan
 ```
 ---
 
@@ -113,8 +113,9 @@ flowchart TB
 
 ```json
 {
-"risk_level": "medium",
-"study_plan": "Structured weekly plan with revision strategy..."
+"risk_level": "high"
+"study_plan": "Based on the provided information, here’s a structured weekly study plan that prioritizes your weak subject (Math) while also allocating time to Physics and Computer Science. The plan is designed for a total of 3 hours of study each day, with a focus..."
+}
 ```
 
 

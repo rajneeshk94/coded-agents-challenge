@@ -4,4 +4,4 @@ flowchart TB
     generate_plan --> self_evaluate_plan
     self_evaluate_plan -->|good| END
     self_evaluate_plan -->|poor| improve_plan
-    improve_plan --> END
+    improve_plan --> self_evaluate_plan
