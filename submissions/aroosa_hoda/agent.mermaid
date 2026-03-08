@@ -1,0 +1,20 @@
+flowchart TB
+  __start__(__start__)
+  ExtractSkills(ExtractSkills)
+  ExtractRoleSkills(ExtractRoleSkills)
+  EvaluateEligibility(EvaluateEligibility)
+  SelfEvaluate(SelfEvaluate)
+  SuggestPlan(SuggestPlan)
+  HumanReview(HumanReview)
+  Output(Output)
+  __end__(__end__)
+  EvaluateEligibility --> SelfEvaluate
+  ExtractRoleSkills --> EvaluateEligibility
+  ExtractSkills --> ExtractRoleSkills
+  HumanReview --> Output
+  SelfEvaluate --> HumanReview
+  SelfEvaluate --> |Eligible|Output
+  SelfEvaluate --> SuggestPlan
+  SuggestPlan --> Output
+  __start__ --> ExtractSkills
+  Output --> __end__

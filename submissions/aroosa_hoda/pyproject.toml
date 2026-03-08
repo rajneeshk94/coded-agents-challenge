@@ -1,0 +1,18 @@
+[project]
+name = "internship-eligibility-agent"
+version = "0.1.0"
+description = "LangGraph + UiPath coded agent for internship eligibility analysis."
+readme = "README.md"
+requires-python = ">=3.10"
+
+authors = [
+  { name = "Aroosa Hoda" }
+]
+
+dependencies = [
+    "langgraph",
+    "langchain",
+    "pydantic",
+    "uipath-langchain",
+    "uipath"
+]

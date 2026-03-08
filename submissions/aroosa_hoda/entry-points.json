@@ -1,0 +1,224 @@
+{
+    "$schema": "https://cloud.uipath.com/draft/2024-12/entry-point",
+    "$id": "entry-points.json",
+    "entryPoints": [
+        {
+            "filePath": "agent",
+            "uniqueId": "ba1ec16c-8ca5-491b-9fb0-fae88a6fa4d4",
+            "type": "agent",
+            "input": {
+                "type": "object",
+                "properties": {
+                    "student_profile": {
+                        "title": "Student Profile",
+                        "type": "string"
+                    },
+                    "internship_role": {
+                        "title": "Internship Role",
+                        "type": "string"
+                    },
+                    "extracted_skills": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "title": "Extracted Skills",
+                        "type": "array"
+                    },
+                    "required_skills": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "title": "Required Skills",
+                        "type": "array"
+                    },
+                    "eligible": {
+                        "type": "boolean"
+                    },
+                    "skill_gap": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "title": "Skill Gap",
+                        "type": "array"
+                    },
+                    "improvement_plan": {
+                        "type": "string"
+                    },
+                    "evaluation_confidence": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "student_profile",
+                    "internship_role"
+                ]
+            },
+            "output": {
+                "type": "object",
+                "properties": {
+                    "student_profile": {
+                        "title": "Student Profile",
+                        "type": "string"
+                    },
+                    "internship_role": {
+                        "title": "Internship Role",
+                        "type": "string"
+                    },
+                    "extracted_skills": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "title": "Extracted Skills",
+                        "type": "array"
+                    },
+                    "required_skills": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "title": "Required Skills",
+                        "type": "array"
+                    },
+                    "eligible": {
+                        "type": "boolean"
+                    },
+                    "skill_gap": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "title": "Skill Gap",
+                        "type": "array"
+                    },
+                    "improvement_plan": {
+                        "type": "string"
+                    },
+                    "evaluation_confidence": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "student_profile",
+                    "internship_role"
+                ]
+            },
+            "graph": {
+                "nodes": [
+                    {
+                        "id": "__start__",
+                        "name": "__start__",
+                        "type": "__start__",
+                        "subgraph": null,
+                        "metadata": {}
+                    },
+                    {
+                        "id": "ExtractSkills",
+                        "name": "ExtractSkills",
+                        "type": "node",
+                        "subgraph": null,
+                        "metadata": {}
+                    },
+                    {
+                        "id": "ExtractRoleSkills",
+                        "name": "ExtractRoleSkills",
+                        "type": "node",
+                        "subgraph": null,
+                        "metadata": {}
+                    },
+                    {
+                        "id": "EvaluateEligibility",
+                        "name": "EvaluateEligibility",
+                        "type": "node",
+                        "subgraph": null,
+                        "metadata": {}
+                    },
+                    {
+                        "id": "SelfEvaluate",
+                        "name": "SelfEvaluate",
+                        "type": "node",
+                        "subgraph": null,
+                        "metadata": {}
+                    },
+                    {
+                        "id": "SuggestPlan",
+                        "name": "SuggestPlan",
+                        "type": "node",
+                        "subgraph": null,
+                        "metadata": {}
+                    },
+                    {
+                        "id": "HumanReview",
+                        "name": "HumanReview",
+                        "type": "node",
+                        "subgraph": null,
+                        "metadata": {}
+                    },
+                    {
+                        "id": "Output",
+                        "name": "Output",
+                        "type": "node",
+                        "subgraph": null,
+                        "metadata": {}
+                    },
+                    {
+                        "id": "__end__",
+                        "name": "__end__",
+                        "type": "__end__",
+                        "subgraph": null,
+                        "metadata": {}
+                    }
+                ],
+                "edges": [
+                    {
+                        "source": "EvaluateEligibility",
+                        "target": "SelfEvaluate",
+                        "label": null
+                    },
+                    {
+                        "source": "ExtractRoleSkills",
+                        "target": "EvaluateEligibility",
+                        "label": null
+                    },
+                    {
+                        "source": "ExtractSkills",
+                        "target": "ExtractRoleSkills",
+                        "label": null
+                    },
+                    {
+                        "source": "HumanReview",
+                        "target": "Output",
+                        "label": null
+                    },
+                    {
+                        "source": "SelfEvaluate",
+                        "target": "HumanReview",
+                        "label": null
+                    },
+                    {
+                        "source": "SelfEvaluate",
+                        "target": "Output",
+                        "label": "Eligible"
+                    },
+                    {
+                        "source": "SelfEvaluate",
+                        "target": "SuggestPlan",
+                        "label": null
+                    },
+                    {
+                        "source": "SuggestPlan",
+                        "target": "Output",
+                        "label": null
+                    },
+                    {
+                        "source": "__start__",
+                        "target": "ExtractSkills",
+                        "label": null
+                    },
+                    {
+                        "source": "Output",
+                        "target": "__end__",
+                        "label": null
+                    }
+                ]
+            }
+        }
+    ]
+}
