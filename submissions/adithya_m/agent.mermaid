@@ -1,0 +1,13 @@
+graph TD
+
+A[Candidate Input] --> B[Extractor Node]
+
+B --> C{Eligibility Check}
+
+C -->|Eligible| D[Recommend Internship]
+
+C -->|Not Eligible| E[Suggest Skills]
+
+D --> F[Final Response]
+
+E --> F
