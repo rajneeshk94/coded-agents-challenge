@@ -54,6 +54,102 @@ The project uses a typed LangGraph state machine with:
 
 The `action_analyzer` node uses `UiPathChat(...).with_structured_output(...)` to request deterministic JSON-like output from the LLM. To keep local execution and `uipath init` stable even when UiPath credentials are not configured, the node falls back to deterministic keyword-based risk classification when the LLM is unavailable.
 
+                +----------------------------+
+                |   User / AI Automation     |
+                |   (Action Request Input)   |
+                +-------------+--------------+
+                              |
+                              v
+                +----------------------------+
+                |        Input Layer         |
+                |  Action + Description      |
+                +-------------+--------------+
+                              |
+                              v
+                +----------------------------+
+                |      Action Analyzer       |
+                |  Risk Classification Node  |
+                |  (UiPathChat + LangChain)  |
+                +-------------+--------------+
+                              |
+                              v
+                +----------------------------+
+                |       Decision Router      |
+                |   Conditional Routing      |
+                |   Based on Risk Level      |
+                +------+-----------+---------+
+                       |           |
+                       v           v
+            +---------------+   +---------------+
+            | Execute Node  |   | Review Node   |
+            | LOW Risk      |   | MEDIUM Risk   |
+            +-------+-------+   +-------+-------+
+                    |                   |
+                    v                   v
+              +--------------------------------+
+              |     Human Approval Node        |
+              |          HIGH Risk             |
+              +--------------------------------+
+                              |
+                              v
+                +----------------------------+
+                |     Structured Output      |
+                |     Risk Decision JSON     |
+                +----------------------------+
+
+                +------------------------------------------------------+
+|                  AI_AGENT_RISK_MONITOR               |
++------------------------------------------------------+
+
+        +----------------------+
+        |      Input Layer     |
+        |----------------------|
+        | Receives action and  |
+        | description inputs   |
+        +----------+-----------+
+                   |
+                   v
+
+        +----------------------+
+        |  Agent Intelligence  |
+        |----------------------|
+        | LangGraph Workflow   |
+        | UiPathChat LLM       |
+        | Structured Output    |
+        +----------+-----------+
+                   |
+                   v
+
+        +----------------------+
+        |    Decision Layer    |
+        |----------------------|
+        | Conditional Routing  |
+        | Based on risk_level  |
+        +----+--------+--------+
+             |        |
+             v        v
+
+    +--------------+   +--------------+
+    | Execute Node |   | Review Node  |
+    | LOW Risk     |   | MEDIUM Risk  |
+    +------+-------+   +------+-------+
+           |                  |
+           v                  v
+
+       +------------------------------+
+       |     Human Approval Node      |
+       |          HIGH Risk           |
+       +------------------------------+
+
+                   |
+                   v
+
+        +----------------------+
+        |      Output Layer    |
+        |----------------------|
+        | Structured JSON Risk |
+        | Decision Output      |
+        +----------------------+
 ## Graph State
 
 `AgentState` contains:
