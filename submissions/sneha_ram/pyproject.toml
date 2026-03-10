@@ -1,0 +1,9 @@
+[project]
+name = "AutomationControlAgent"
+version = "0.0.1"
+description = "AutomationControlAgent"
+authors = [{ name = "John Doe", email = "john.doe@myemail.com" }]
+dependencies = [
+    "uipath-langchain>=0.2.0",
+]
+requires-python = ">=3.11"

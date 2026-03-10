@@ -1,0 +1,26 @@
+flowchart TB
+  __start__(__start__)
+  FetchInputs(FetchInputs)
+  ExtractTasks(ExtractTasks)
+  ClassifyIntent(ClassifyIntent)
+  EvaluatePriority(EvaluatePriority)
+  ToolSelector(ToolSelector)
+  ExecuteAutomation(ExecuteAutomation)
+  VerifyExecution(VerifyExecution)
+  RetryAutomation(RetryAutomation)
+  HumanApproval(HumanApproval)
+  GenerateBrief(GenerateBrief)
+  __end__(__end__)
+  ClassifyIntent --> EvaluatePriority
+  EvaluatePriority --> ToolSelector
+  ExecuteAutomation --> VerifyExecution
+  ExtractTasks --> ClassifyIntent
+  FetchInputs --> ExtractTasks
+  HumanApproval --> GenerateBrief
+  RetryAutomation --> ExecuteAutomation
+  ToolSelector --> ExecuteAutomation
+  VerifyExecution --> GenerateBrief
+  VerifyExecution --> HumanApproval
+  VerifyExecution --> RetryAutomation
+  __start__ --> FetchInputs
+  GenerateBrief --> __end__

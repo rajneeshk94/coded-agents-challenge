@@ -1,0 +1,24 @@
+{
+  "emails": [
+    {
+      "subject": "Mid Semester Exam Schedule Released",
+      "body": "Mid semester exams will begin from Monday. Please prepare accordingly."
+    },
+    {
+      "subject": "Google STEP Internship Applications Open",
+      "body": "Applications close in 3 days. Submit your resume through the portal."
+    },
+    {
+      "subject": "Project Meeting Tomorrow",
+      "body": "We have a meeting tomorrow at 4 PM to discuss the project progress."
+    },
+    {
+      "subject": "College Cultural Fest Promotion",
+      "body": "Register for cultural fest events and competitions."
+    },
+    {
+      "subject": "Placement Cell Announcement",
+      "body": "New internship opportunities available for third-year students."
+    }
+  ]
+}

@@ -1,0 +1,272 @@
+{
+    "$schema": "https://cloud.uipath.com/draft/2024-12/entry-point",
+    "$id": "entry-points.json",
+    "entryPoints": [
+        {
+            "filePath": "agent",
+            "uniqueId": "a0515bd7-3b99-4a9d-95d2-52a766f924af",
+            "type": "agent",
+            "input": {
+                "type": "object",
+                "properties": {
+                    "emails": {
+                        "items": {},
+                        "title": "Email Inbox",
+                        "type": "array"
+                    },
+                    "tasks": {
+                        "items": {},
+                        "title": "Tasks",
+                        "type": "array"
+                    },
+                    "intents": {
+                        "items": {},
+                        "title": "Intents",
+                        "type": "array"
+                    },
+                    "priorities": {
+                        "items": {},
+                        "title": "Priorities",
+                        "type": "array"
+                    },
+                    "actions": {
+                        "items": {},
+                        "title": "Actions",
+                        "type": "array"
+                    },
+                    "execution_results": {
+                        "items": {},
+                        "title": "Execution Results",
+                        "type": "array"
+                    },
+                    "failed_actions": {
+                        "items": {},
+                        "title": "Failed Actions",
+                        "type": "array"
+                    },
+                    "retry_count": {
+                        "default": 0,
+                        "title": "Retry Count",
+                        "type": "integer"
+                    },
+                    "summary": {
+                        "default": "",
+                        "title": "Summary",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "emails"
+                ]
+            },
+            "output": {
+                "type": "object",
+                "properties": {
+                    "emails": {
+                        "items": {},
+                        "title": "Email Inbox",
+                        "type": "array"
+                    },
+                    "tasks": {
+                        "items": {},
+                        "title": "Tasks",
+                        "type": "array"
+                    },
+                    "intents": {
+                        "items": {},
+                        "title": "Intents",
+                        "type": "array"
+                    },
+                    "priorities": {
+                        "items": {},
+                        "title": "Priorities",
+                        "type": "array"
+                    },
+                    "actions": {
+                        "items": {},
+                        "title": "Actions",
+                        "type": "array"
+                    },
+                    "execution_results": {
+                        "items": {},
+                        "title": "Execution Results",
+                        "type": "array"
+                    },
+                    "failed_actions": {
+                        "items": {},
+                        "title": "Failed Actions",
+                        "type": "array"
+                    },
+                    "retry_count": {
+                        "default": 0,
+                        "title": "Retry Count",
+                        "type": "integer"
+                    },
+                    "summary": {
+                        "default": "",
+                        "title": "Summary",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "emails"
+                ]
+            },
+            "graph": {
+                "nodes": [
+                    {
+                        "id": "__start__",
+                        "name": "__start__",
+                        "type": "__start__",
+                        "subgraph": null,
+                        "metadata": {}
+                    },
+                    {
+                        "id": "FetchInputs",
+                        "name": "FetchInputs",
+                        "type": "node",
+                        "subgraph": null,
+                        "metadata": {}
+                    },
+                    {
+                        "id": "ExtractTasks",
+                        "name": "ExtractTasks",
+                        "type": "node",
+                        "subgraph": null,
+                        "metadata": {}
+                    },
+                    {
+                        "id": "ClassifyIntent",
+                        "name": "ClassifyIntent",
+                        "type": "node",
+                        "subgraph": null,
+                        "metadata": {}
+                    },
+                    {
+                        "id": "EvaluatePriority",
+                        "name": "EvaluatePriority",
+                        "type": "node",
+                        "subgraph": null,
+                        "metadata": {}
+                    },
+                    {
+                        "id": "ToolSelector",
+                        "name": "ToolSelector",
+                        "type": "node",
+                        "subgraph": null,
+                        "metadata": {}
+                    },
+                    {
+                        "id": "ExecuteAutomation",
+                        "name": "ExecuteAutomation",
+                        "type": "node",
+                        "subgraph": null,
+                        "metadata": {}
+                    },
+                    {
+                        "id": "VerifyExecution",
+                        "name": "VerifyExecution",
+                        "type": "node",
+                        "subgraph": null,
+                        "metadata": {}
+                    },
+                    {
+                        "id": "RetryAutomation",
+                        "name": "RetryAutomation",
+                        "type": "node",
+                        "subgraph": null,
+                        "metadata": {}
+                    },
+                    {
+                        "id": "HumanApproval",
+                        "name": "HumanApproval",
+                        "type": "node",
+                        "subgraph": null,
+                        "metadata": {}
+                    },
+                    {
+                        "id": "GenerateBrief",
+                        "name": "GenerateBrief",
+                        "type": "node",
+                        "subgraph": null,
+                        "metadata": {}
+                    },
+                    {
+                        "id": "__end__",
+                        "name": "__end__",
+                        "type": "__end__",
+                        "subgraph": null,
+                        "metadata": {}
+                    }
+                ],
+                "edges": [
+                    {
+                        "source": "ClassifyIntent",
+                        "target": "EvaluatePriority",
+                        "label": null
+                    },
+                    {
+                        "source": "EvaluatePriority",
+                        "target": "ToolSelector",
+                        "label": null
+                    },
+                    {
+                        "source": "ExecuteAutomation",
+                        "target": "VerifyExecution",
+                        "label": null
+                    },
+                    {
+                        "source": "ExtractTasks",
+                        "target": "ClassifyIntent",
+                        "label": null
+                    },
+                    {
+                        "source": "FetchInputs",
+                        "target": "ExtractTasks",
+                        "label": null
+                    },
+                    {
+                        "source": "HumanApproval",
+                        "target": "GenerateBrief",
+                        "label": null
+                    },
+                    {
+                        "source": "RetryAutomation",
+                        "target": "ExecuteAutomation",
+                        "label": null
+                    },
+                    {
+                        "source": "ToolSelector",
+                        "target": "ExecuteAutomation",
+                        "label": null
+                    },
+                    {
+                        "source": "VerifyExecution",
+                        "target": "GenerateBrief",
+                        "label": null
+                    },
+                    {
+                        "source": "VerifyExecution",
+                        "target": "HumanApproval",
+                        "label": null
+                    },
+                    {
+                        "source": "VerifyExecution",
+                        "target": "RetryAutomation",
+                        "label": null
+                    },
+                    {
+                        "source": "__start__",
+                        "target": "FetchInputs",
+                        "label": null
+                    },
+                    {
+                        "source": "GenerateBrief",
+                        "target": "__end__",
+                        "label": null
+                    }
+                ]
+            }
+        }
+    ]
+}
