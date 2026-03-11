@@ -1,0 +1,1 @@
+{"action": "Send Email", "risk_level": "MEDIUM", "analysis": "Outbound communication can leak information or trigger unintended actions.", "decision": "Manual Review Recommended", "task_id": ""}

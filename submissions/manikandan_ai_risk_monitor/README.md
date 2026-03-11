@@ -19,20 +19,58 @@ The agent provides a structured, production-ready risk decision for AI-initiated
 
 - `LOW` -> `Safe to Execute`
 - `MEDIUM` -> `Manual Review Recommended`
-- `HIGH` -> `Human Approval Required`
+- `HIGH` -> `Human Approval Requested`
+
+## Graph State
+
+The LangGraph state is implemented as a structured `TypedDict`:
+
+```python
+class AgentState(TypedDict):
+    action: str
+    description: str
+    risk_level: str
+    analysis: str
+    decision: str
+    task_id: str
+```
 
 ## Agent Flow
 
 1. `action_analyzer`
-   Evaluates `action` and `description` with `UiPathChat` structured output.
+   Uses `UiPathChat` structured output when available and falls back to deterministic heuristics when credentials are missing.
 2. `decision_router`
-   Sets the decision and routes by `risk_level`.
+   Routes actions by `risk_level`.
 3. `execute_node`
-   Returns a final safe decision for `LOW` risk.
+   Returns `Safe to Execute` for `LOW` risk.
 4. `review_node`
-   Returns a manual review decision for `MEDIUM` risk.
+   Returns `Manual Review Recommended` for `MEDIUM` risk.
 5. `human_approval_node`
-   Returns a human approval decision for `HIGH` risk.
+   Creates the UiPath Action Center task for `HIGH` risk actions.
+6. `wait_for_approval_node`
+   Pauses the graph with `WaitEscalation(...)` until a human approves or rejects the task.
+
+## Human-In-The-Loop Integration
+
+High-risk actions are escalated to UiPath HITL services using the installed UiPath SDK:
+
+- `UiPath().tasks.create_async(...)` creates the Action Center task.
+- `interrupt(WaitEscalation(...))` pauses execution until the human task is completed.
+- The graph resumes and returns the reviewed outcome.
+
+Implementation note:
+
+- The high-risk path is intentionally split into task creation and wait/resume nodes so task creation happens exactly once across suspend and resume cycles.
+- When UiPath HITL is not configured locally, the agent returns a local placeholder `task_id` so `uipath run agent ...` still works during development.
+
+Required environment variables for real UiPath HITL:
+
+```bash
+UIPATH_HITL_APP_NAME=AI Action Approval App
+UIPATH_HITL_APP_FOLDER_PATH=Shared
+UIPATH_HITL_RECIPIENT_EMAIL=approver@company.com
+UIPATH_HITL_PRIORITY=High
+```
 
 ## Tools Used
 
@@ -41,124 +79,51 @@ The agent provides a structured, production-ready risk decision for AI-initiated
 - `uipath-langchain`
 - LangGraph
 - LangChain
-- Pydantic structured models
+- Typed `AgentState`
+- Conditional routing
+- UiPath Action Center HITL
+
+## Architecture Diagram
+
+```mermaid
+flowchart TB
+    request[AI Action Request] --> analyzer[action_analyzer]
+    analyzer --> router[decision_router]
+    router -->|LOW| execute[execute_node]
+    router -->|MEDIUM| review[review_node]
+    router -->|HIGH| hitlCreate[human_approval_node<br/>create task]
+    hitlCreate --> hitlWait[wait_for_approval_node<br/>interrupt and resume]
+    execute --> out[Structured JSON Output]
+    review --> out
+    hitlWait --> out
+```
+
+## Workflow Diagram
+
+```mermaid
+flowchart TB
+    START([START]) --> action_analyzer[action_analyzer]
+    action_analyzer --> decision_router[decision_router]
+    decision_router -->|LOW| execute_node[execute_node]
+    decision_router -->|MEDIUM| review_node[review_node]
+    decision_router -->|HIGH| human_approval_node[human_approval_node]
+    human_approval_node --> wait_for_approval_node[wait_for_approval_node]
+    execute_node --> END([END])
+    review_node --> END
+    wait_for_approval_node --> END
+```
 
 ## Architecture Explanation
 
-The project uses a typed LangGraph state machine with:
+The project uses:
 
 - `Input` for UiPath runtime input schema
-- `AgentState` as the structured graph state
-- `Output` for final structured JSON output
-- Conditional routing from `decision_router` to three terminal nodes
+- `AgentState` as the structured LangGraph state
+- `Output` for the final JSON contract
+- conditional routing from `decision_router`
+- a dedicated HITL creation node and a resumable approval wait node
 
-The `action_analyzer` node uses `UiPathChat(...).with_structured_output(...)` to request deterministic JSON-like output from the LLM. To keep local execution and `uipath init` stable even when UiPath credentials are not configured, the node falls back to deterministic keyword-based risk classification when the LLM is unavailable.
-
-                +----------------------------+
-                |   User / AI Automation     |
-                |   (Action Request Input)   |
-                +-------------+--------------+
-                              |
-                              v
-                +----------------------------+
-                |        Input Layer         |
-                |  Action + Description      |
-                +-------------+--------------+
-                              |
-                              v
-                +----------------------------+
-                |      Action Analyzer       |
-                |  Risk Classification Node  |
-                |  (UiPathChat + LangChain)  |
-                +-------------+--------------+
-                              |
-                              v
-                +----------------------------+
-                |       Decision Router      |
-                |   Conditional Routing      |
-                |   Based on Risk Level      |
-                +------+-----------+---------+
-                       |           |
-                       v           v
-            +---------------+   +---------------+
-            | Execute Node  |   | Review Node   |
-            | LOW Risk      |   | MEDIUM Risk   |
-            +-------+-------+   +-------+-------+
-                    |                   |
-                    v                   v
-              +--------------------------------+
-              |     Human Approval Node        |
-              |          HIGH Risk             |
-              +--------------------------------+
-                              |
-                              v
-                +----------------------------+
-                |     Structured Output      |
-                |     Risk Decision JSON     |
-                +----------------------------+
-
-                +------------------------------------------------------+
-|                  AI_AGENT_RISK_MONITOR               |
-+------------------------------------------------------+
-
-        +----------------------+
-        |      Input Layer     |
-        |----------------------|
-        | Receives action and  |
-        | description inputs   |
-        +----------+-----------+
-                   |
-                   v
-
-        +----------------------+
-        |  Agent Intelligence  |
-        |----------------------|
-        | LangGraph Workflow   |
-        | UiPathChat LLM       |
-        | Structured Output    |
-        +----------+-----------+
-                   |
-                   v
-
-        +----------------------+
-        |    Decision Layer    |
-        |----------------------|
-        | Conditional Routing  |
-        | Based on risk_level  |
-        +----+--------+--------+
-             |        |
-             v        v
-
-    +--------------+   +--------------+
-    | Execute Node |   | Review Node  |
-    | LOW Risk     |   | MEDIUM Risk  |
-    +------+-------+   +------+-------+
-           |                  |
-           v                  v
-
-       +------------------------------+
-       |     Human Approval Node      |
-       |          HIGH Risk           |
-       +------------------------------+
-
-                   |
-                   v
-
-        +----------------------+
-        |      Output Layer    |
-        |----------------------|
-        | Structured JSON Risk |
-        | Decision Output      |
-        +----------------------+
-## Graph State
-
-`AgentState` contains:
-
-- `action`
-- `description`
-- `risk_level`
-- `decision`
-- `analysis`
+This design keeps task creation idempotent and allows production deployments to pause and resume safely when a human must review high-risk actions.
 
 ## Example Input
 
@@ -171,14 +136,23 @@ The `action_analyzer` node uses `UiPathChat(...).with_structured_output(...)` to
 
 ## Example Output
 
+Local development output when HITL is not configured:
+
 ```json
 {
   "action": "Transfer Money",
   "risk_level": "HIGH",
-  "analysis": "Financial transfer to an external or uncontrolled destination detected.",
-  "decision": "Human Approval Required"
+  "analysis": "Financial transfer to an external or uncontrolled destination detected. UiPath HITL is not configured in the current environment; returned a local approval placeholder instead.",
+  "decision": "Human Approval Requested",
+  "task_id": "LOCAL-HITL-1234ABCD"
 }
 ```
+
+Production runtime behavior when HITL is configured:
+
+1. The first run creates a UiPath Action Center task and pauses.
+2. After the human completes the task, resume the run.
+3. The final response includes the `task_id` and the human-reviewed decision.
 
 ## How to Run
 
@@ -200,15 +174,27 @@ Initialize the project metadata:
 uipath init
 ```
 
-Run locally:
+Run locally with inline JSON:
 
 ```bash
-uipath run agent '{"action":"Send Email","description":"Send report to manager"}'
+uipath run agent '{"action":"Transfer Money","description":"Transfer $5000"}'
+```
+
+Run locally with a JSON file:
+
+```bash
+uipath run agent --file high_input.json --output-file high_output.json
+```
+
+Resume a suspended HITL run after a human completes the task:
+
+```bash
+uipath run --resume
 ```
 
 ## How to Deploy Using UiPath CLI
 
-1. Authenticate if you want live UiPath LLM execution or platform deployment:
+1. Authenticate:
 
 ```bash
 uipath auth
@@ -232,13 +218,13 @@ uipath pack
 uipath publish
 ```
 
-5. Deploy to UiPath Cloud or Studio Web according to your target workspace configuration.
+5. Deploy to a UiPath tenant where Orchestrator and Action Center are enabled.
 
 ## Files
 
-- `main.py` - typed LangGraph agent implementation
+- `main.py` - LangGraph agent with UiPath HITL integration
 - `langgraph.json` - UiPath LangGraph entrypoint mapping
 - `uipath.json` - UiPath runtime and packaging configuration
 - `pyproject.toml` - Python package metadata and dependencies
-- `agent.mermaid` - graph diagram
+- `agent.mermaid` - workflow diagram
 - `README.md` - setup, architecture, and deployment guide
