@@ -1,0 +1,32 @@
+---
+title: Resume Reviewer Agent Flow
+---
+graph TD
+    START([🚀 START]) --> extract
+
+    extract["📄 Node 1: Extract Resume Info\n─────────────────────\nParse name, skills,\neducation, experience"]
+
+    extract --> skill_gap
+
+    skill_gap["🔍 Node 2: Skill Gap Analysis\n─────────────────────\nCompare candidate skills\nvs role requirements"]
+
+    skill_gap --> score
+
+    score["⭐ Node 3: Score Resume\n─────────────────────\nLLM scores 0-100\nGenerates feedback &\nrecommendation"]
+
+    score --> self_eval
+
+    self_eval{"🧠 Node 4: Self-Evaluation\n─────────────────────\nIs score suspicious?\nretry_count < 2?"}
+
+    self_eval -->|"Suspicious score\n(0 or 100 with skills)\n→ retry_score"| score
+    self_eval -->|"Score looks valid\n→ finalize"| report
+
+    report["📊 Node 5: Build Final Report\n─────────────────────\nAssemble structured JSON:\n• candidate_name\n• overall_score\n• recommendation\n• feedback\n• skill_gaps"]
+
+    report --> END([✅ END])
+
+    style START fill:#4CAF50,color:#fff
+    style END fill:#4CAF50,color:#fff
+    style self_eval fill:#FF9800,color:#fff
+    style score fill:#2196F3,color:#fff
+    style report fill:#9C27B0,color:#fff
