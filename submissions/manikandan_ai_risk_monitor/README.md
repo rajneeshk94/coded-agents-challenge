@@ -1,244 +1,245 @@
-# AI_AGENT_RISK_MONITOR
+AI_AGENT_RISK_MONITOR
 
-## Use Case
+Overview
 
-`AI_AGENT_RISK_MONITOR` monitors actions proposed or executed by AI systems and classifies them as `LOW`, `MEDIUM`, or `HIGH` risk before downstream automation proceeds.
+AI_AGENT_RISK_MONITOR is an intelligent agent built using UiPath Python SDK and LangGraph that evaluates actions proposed by AI systems and classifies their risk level before allowing automation to proceed.
 
-Typical actions:
+In modern AI-driven automation environments, agents may perform actions like sending emails, modifying files, transferring money, or accessing databases. This system acts as a safety layer, ensuring that potentially dangerous operations are reviewed before execution.
 
-- Send Email
-- Delete File
-- Transfer Money
-- Access Database
-- Create Meeting
-- Modify System Settings
+The agent performs risk analysis, routes decisions using conditional logic, and integrates Human-in-the-Loop (HITL) approval for high-risk actions.
 
-## Goal
+---
 
-The agent provides a structured, production-ready risk decision for AI-initiated actions:
+Use Case
 
-- `LOW` -> `Safe to Execute`
-- `MEDIUM` -> `Manual Review Recommended`
-- `HIGH` -> `Human Approval Required`
+AI systems increasingly automate tasks such as:
 
-## Agent Flow
+- Sending Emails
+- Deleting Files
+- Accessing Databases
+- Transferring Money
+- Creating Meetings
+- Modifying System Settings
 
-1. `action_analyzer`
-   Evaluates `action` and `description` with `UiPathChat` structured output.
-2. `decision_router`
-   Sets the decision and routes by `risk_level`.
-3. `execute_node`
-   Returns a final safe decision for `LOW` risk.
-4. `review_node`
-   Returns a manual review decision for `MEDIUM` risk.
-5. `human_approval_node`
-   Returns a human approval decision for `HIGH` risk.
+These actions may introduce security risks or unintended consequences.
 
-## Tools Used
+The AI Agent Risk Monitor evaluates each action and assigns a risk level before execution.
 
-- Python
-- UiPath Python SDK
-- `uipath-langchain`
-- LangGraph
-- LangChain
-- Pydantic structured models
+---
 
-## Architecture Explanation
+Goal of the Agent
 
-The project uses a typed LangGraph state machine with:
+The goal is to ensure safe automation by categorizing actions into three levels:
 
-- `Input` for UiPath runtime input schema
-- `AgentState` as the structured graph state
-- `Output` for final structured JSON output
-- Conditional routing from `decision_router` to three terminal nodes
+Risk Level| Decision
+LOW| Safe to Execute
+MEDIUM| Manual Review Recommended
+HIGH| Human Approval Required
 
-The `action_analyzer` node uses `UiPathChat(...).with_structured_output(...)` to request deterministic JSON-like output from the LLM. To keep local execution and `uipath init` stable even when UiPath credentials are not configured, the node falls back to deterministic keyword-based risk classification when the LLM is unavailable.
+This allows organizations to prevent dangerous automation actions before they occur.
 
-                +----------------------------+
-                |   User / AI Automation     |
-                |   (Action Request Input)   |
-                +-------------+--------------+
-                              |
-                              v
-                +----------------------------+
-                |        Input Layer         |
-                |  Action + Description      |
-                +-------------+--------------+
-                              |
-                              v
-                +----------------------------+
-                |      Action Analyzer       |
-                |  Risk Classification Node  |
-                |  (UiPathChat + LangChain)  |
-                +-------------+--------------+
-                              |
-                              v
-                +----------------------------+
-                |       Decision Router      |
-                |   Conditional Routing      |
-                |   Based on Risk Level      |
-                +------+-----------+---------+
-                       |           |
-                       v           v
-            +---------------+   +---------------+
-            | Execute Node  |   | Review Node   |
-            | LOW Risk      |   | MEDIUM Risk   |
-            +-------+-------+   +-------+-------+
-                    |                   |
-                    v                   v
-              +--------------------------------+
-              |     Human Approval Node        |
-              |          HIGH Risk             |
-              +--------------------------------+
-                              |
-                              v
-                +----------------------------+
-                |     Structured Output      |
-                |     Risk Decision JSON     |
-                +----------------------------+
+---
 
-                +------------------------------------------------------+
-|                  AI_AGENT_RISK_MONITOR               |
-+------------------------------------------------------+
+Agent Workflow
 
-        +----------------------+
-        |      Input Layer     |
-        |----------------------|
-        | Receives action and  |
-        | description inputs   |
-        +----------+-----------+
-                   |
-                   v
+The agent is implemented using a LangGraph state machine.
 
-        +----------------------+
-        |  Agent Intelligence  |
-        |----------------------|
-        | LangGraph Workflow   |
-        | UiPathChat LLM       |
-        | Structured Output    |
-        +----------+-----------+
-                   |
-                   v
+Step 1 – Action Analyzer
 
-        +----------------------+
-        |    Decision Layer    |
-        |----------------------|
-        | Conditional Routing  |
-        | Based on risk_level  |
-        +----+--------+--------+
-             |        |
-             v        v
+Analyzes the action and description using an LLM and produces structured output including:
 
-    +--------------+   +--------------+
-    | Execute Node |   | Review Node  |
-    | LOW Risk     |   | MEDIUM Risk  |
-    +------+-------+   +------+-------+
-           |                  |
-           v                  v
+- risk level
+- explanation
 
-       +------------------------------+
-       |     Human Approval Node      |
-       |          HIGH Risk           |
-       +------------------------------+
+Step 2 – Decision Router
 
-                   |
-                   v
+Routes the workflow based on the identified risk level.
 
-        +----------------------+
-        |      Output Layer    |
-        |----------------------|
-        | Structured JSON Risk |
-        | Decision Output      |
-        +----------------------+
-## Graph State
+Step 3 – Execute Node
 
-`AgentState` contains:
+Automatically executes actions classified as LOW risk.
 
-- `action`
-- `description`
-- `risk_level`
-- `decision`
-- `analysis`
+Step 4 – Review Node
 
-## Example Input
+Flags actions classified as MEDIUM risk for manual review.
 
-```json
+Step 5 – Human Approval Node
+
+Actions classified as HIGH risk require Human-in-the-Loop approval before execution.
+
+Step 6 – Wait for Approval
+
+If HITL is not configured, the agent generates a local placeholder approval task to allow safe execution during development.
+
+---
+
+Architecture
+
+The system uses a typed graph-based architecture.
+
+Components:
+
+- Input Schema – Defines agent input structure
+- GraphState – Maintains structured state across nodes
+- LangGraph Workflow – Orchestrates execution steps
+- Conditional Routing – Directs execution paths
+- Structured Output – Produces JSON output compatible with automation systems
+
+---
+
+Architecture Diagram
+
+User Input
+   │
+   ▼
+Action Analyzer (LLM)
+   │
+   ▼
+Decision Router
+   │
+   ├── LOW → Execute Node
+   │
+   ├── MEDIUM → Review Node
+   │
+   └── HIGH → Human Approval Node
+                 │
+                 ▼
+           Wait For Approval
+                 │
+                 ▼
+              Output
+
+---
+
+Graph State
+
+The LangGraph state contains the following fields:
+
+- "action"
+- "description"
+- "risk_level"
+- "analysis"
+- "decision"
+- "task_id"
+
+---
+
+Example Input
+
 {
   "action": "Transfer Money",
   "description": "Transfer $5000 to external bank account"
 }
-```
 
-## Example Output
+---
 
-```json
+Example Output
+
 {
   "action": "Transfer Money",
   "risk_level": "HIGH",
   "analysis": "Financial transfer to an external or uncontrolled destination detected.",
-  "decision": "Human Approval Required"
+  "decision": "Human Approval Requested",
+  "task_id": "LOCAL-HITL-21125220"
 }
-```
 
-## How to Run
+---
+
+Technologies Used
+
+- Python
+- UiPath Python SDK
+- LangGraph
+- LangChain
+- Pydantic
+- JSON structured output
+
+---
+
+Project Structure
+
+submissions/
+   manikandan_ai_risk_monitor/
+       main.py
+       langgraph.json
+       pyproject.toml
+       uipath.json
+       agent.mermaid
+       README.md
+       bindings.json
+       entry-points.json
+       input.json
+       requirements.txt
+       AGENTS.md
+       CLAUDE.md
+
+---
+
+Installation
+
+Clone the repository:
+
+git clone https://github.com/rajneeshk94/coded-agents-challenge.git
+
+Navigate to the project folder:
+
+cd submissions/manikandan_ai_risk_monitor
 
 Install dependencies:
 
-```bash
-pip install uipath-langchain langgraph langchain
-```
+pip install -r requirements.txt
 
-Optional project bootstrap command from the challenge instructions:
+---
 
-```bash
-uipath new ai-agent-risk-monitor
-```
+Running the Agent
 
-Initialize the project metadata:
+Run the agent using UiPath CLI:
 
-```bash
-uipath init
-```
+uipath run agent --file input.json
 
-Run locally:
+Example:
 
-```bash
 uipath run agent '{"action":"Send Email","description":"Send report to manager"}'
-```
 
-## How to Deploy Using UiPath CLI
+---
 
-1. Authenticate if you want live UiPath LLM execution or platform deployment:
+Deployment
 
-```bash
+To deploy using UiPath CLI:
+
 uipath auth
-```
-
-2. Initialize runtime metadata and schemas:
-
-```bash
 uipath init
-```
-
-3. Pack the project:
-
-```bash
 uipath pack
-```
-
-4. Publish the package:
-
-```bash
 uipath publish
-```
 
-5. Deploy to UiPath Cloud or Studio Web according to your target workspace configuration.
+This will package and deploy the coded agent to UiPath Cloud.
 
-## Files
+---
 
-- `main.py` - typed LangGraph agent implementation
-- `langgraph.json` - UiPath LangGraph entrypoint mapping
-- `uipath.json` - UiPath runtime and packaging configuration
-- `pyproject.toml` - Python package metadata and dependencies
-- `agent.mermaid` - graph diagram
-- `README.md` - setup, architecture, and deployment guide
+Key Features
+
+- Agentic workflow using LangGraph
+- Conditional routing based on risk classification
+- Structured JSON output
+- Human-in-the-Loop integration
+- Safe fallback when HITL is unavailable
+- Modular graph architecture
+
+---
+
+Future Improvements
+
+- Real-time approval dashboard
+- Integration with enterprise security policies
+- Risk scoring using historical behavior
+- Advanced anomaly detection for AI agents
+
+---
+
+Conclusion
+
+AI_AGENT_RISK_MONITOR demonstrates a production-ready agentic safety layer for AI automation systems.
+
+By combining LangGraph orchestration, structured outputs, and human-in-the-loop verification, the system ensures that automation remains safe, transparent, and controllable.
+
+This project showcases how agentic workflows can be used to build trustworthy AI-driven automation systems.
