@@ -1,0 +1,32 @@
+{
+  "entryPoints": [
+    {
+      "filePath": "main.py",
+      "uniqueName": "agent",
+      "type": "graph",
+      "input": {
+        "type": "object",
+        "properties": {
+          "resume_text": {
+            "type": "string",
+            "description": "The full text content of the resume to be reviewed"
+          },
+          "target_role": {
+            "type": "string",
+            "description": "The job role the candidate is applying for (e.g. Software Engineer, Data Scientist)"
+          }
+        },
+        "required": ["resume_text", "target_role"]
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "final_report": {
+            "type": "object",
+            "description": "Structured review report with score, recommendation, feedback and skill gaps"
+          }
+        }
+      }
+    }
+  ]
+}
