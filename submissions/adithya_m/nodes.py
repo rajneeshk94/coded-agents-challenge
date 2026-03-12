@@ -5,6 +5,7 @@ import datetime
 import re
 from langchain_core.messages import HumanMessage
 
+
 def responder(state):
 
     state.candidate = candidate_info
@@ -27,7 +28,7 @@ Suggested Role:
 """
 
     return {"messages": [HumanMessage(content=response)]}
-from models import CandidateDetails
+
 
 def extractor(state):
 
@@ -54,9 +55,6 @@ def extractor(state):
     )
 
     return {"candidate": candidate}
-from models import EligibilityResult
-
-from models import EligibilityResult
 
 def eligibility_checker(state):
 
@@ -73,12 +71,6 @@ def eligibility_checker(state):
 
     return {"result": result}
 
-
-
-
-from langchain_core.messages import HumanMessage
-
-from langchain_core.messages import HumanMessage
 
 def responder(state):
 
