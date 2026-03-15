@@ -1,0 +1,72 @@
+{
+    "$schema": "https://cloud.uipath.com/draft/2024-12/entry-point",
+    "$id": "entry-points.json",
+    "entryPoints": [
+        {
+            "filePath": "email_triage_agent",
+            "uniqueId": "2387c117-19c5-4d4f-8977-2c977ffe63e3",
+            "type": "agent",
+            "input": {
+                "type": "object",
+                "properties": {
+                    "email_subject": {
+                        "description": "Subject line of the email",
+                        "title": "Email Subject",
+                        "type": "string"
+                    },
+                    "email_body": {
+                        "description": "Body content of the email",
+                        "title": "Email Body",
+                        "type": "string"
+                    },
+                    "sender": {
+                        "description": "Sender's email address",
+                        "title": "Sender",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "email_subject",
+                    "email_body",
+                    "sender"
+                ]
+            },
+            "output": {
+                "type": "object",
+                "properties": {
+                    "category": {
+                        "default": null,
+                        "title": "Category",
+                        "type": "string"
+                    },
+                    "action": {
+                        "default": null,
+                        "title": "Action",
+                        "type": "string"
+                    },
+                    "draft_reply": {
+                        "default": null,
+                        "title": "Draft Reply",
+                        "type": "string"
+                    },
+                    "escalation_note": {
+                        "default": null,
+                        "title": "Escalation Note",
+                        "type": "string"
+                    },
+                    "confidence_score": {
+                        "default": null,
+                        "title": "Confidence Score",
+                        "type": "number"
+                    },
+                    "reasoning": {
+                        "default": null,
+                        "title": "Reasoning",
+                        "type": "string"
+                    }
+                },
+                "required": []
+            }
+        }
+    ]
+}
