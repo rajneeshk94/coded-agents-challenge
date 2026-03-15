@@ -162,7 +162,9 @@ Output:
 ## 🎥 Demo Video
 
 For a quick walkthrough of the agent in action, please view the included video:
-[demo.mp4](./demo.mp4)
+
+<video src="https://github.com/user-attachments/assets/demo.mp4" controls="controls" muted="muted" style="max-height:640px;"></video>
+ 
 
 ---
 
