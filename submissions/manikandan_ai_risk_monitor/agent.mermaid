@@ -2,15 +2,17 @@ flowchart TB
   __start__(__start__)
   action_analyzer(action_analyzer)
   decision_router(decision_router)
-  human_approval_node(human_approval_node)
-  review_node(review_node)
   execute_node(execute_node)
+  review_node(review_node)
+  human_approval_node(human_approval_node)
+  wait_for_approval_node(wait_for_approval_node)
   __end__(__end__)
   __start__ --> action_analyzer
   action_analyzer --> decision_router
   decision_router --> |LOW|execute_node
   decision_router --> |HIGH|human_approval_node
   decision_router --> |MEDIUM|review_node
+  human_approval_node --> wait_for_approval_node
   execute_node --> __end__
-  human_approval_node --> __end__
   review_node --> __end__
+  wait_for_approval_node --> __end__

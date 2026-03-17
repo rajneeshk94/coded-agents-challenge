@@ -4,8 +4,6 @@ version = "1.0.0"
 description = "UiPath coded LangGraph agent for AI action risk monitoring"
 readme = "README.md"
 
-authors = [{ name = "Manikandan", email = "mmani786ms@gmail.com.com" }]
-=======
 authors = [{ name = "Manikandan", email = "mmani786ms@gmail.com" }]
 
 requires-python = ">=3.11,<4.0"

@@ -1,0 +1,14 @@
+flowchart TD
+
+A[User Input]
+B[Context Agent\nDetect Formal / Casual]
+C[Wardrobe Agent\nCategorize Clothing]
+D[Outfit Generator\nGenerate + Score Outfits]
+E[Style Reasoning Agent\nLLM Explanation]
+F[Final Recommendation]
+
+A --> B
+B --> C
+C --> D
+D --> E
+E --> F

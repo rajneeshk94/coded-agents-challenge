@@ -1,0 +1,1 @@
+{"action": "Transfer Money", "risk_level": "HIGH", "analysis": "Transferring $5000 to an external account involves financial and external data risks, requiring high security and oversight. UiPath HITL is not configured in the current environment; returned a local approval placeholder instead.", "decision": "Human Approval Requested", "task_id": "LOCAL-HITL-21125220"}

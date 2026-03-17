@@ -185,7 +185,7 @@ Navigate to the project folder:
 
 cd submissions/manikandan_ai_risk_monitor
 
-Install dependencies:
+# Technologies Used
 
 pip install -r requirements.txt
 
