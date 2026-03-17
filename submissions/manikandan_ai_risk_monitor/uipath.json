@@ -15,11 +15,16 @@
     "filesExcluded": [
       ".env",
       "bindings.json",
-      "entry-points.json"
+      "entry-points.json",
+      "high_input.json",
+      "high_output.json",
+      "low_input.json",
+      "medium_input.json"
     ],
     "directoriesExcluded": [
       ".venv",
       "__pycache__",
+      "__uipath",
       ".pytest_cache",
       ".mypy_cache",
       ".uipath"
