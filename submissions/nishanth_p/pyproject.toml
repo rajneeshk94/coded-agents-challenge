@@ -1,0 +1,21 @@
+[project]
+name = "email-triage-agent"
+version = "0.1.0"
+description = "Smart Email Triage and Draft Agent using LangGraph + UiPath SDK"
+authors = [{ name = "Nishanth P" }]
+requires-python = ">=3.11"
+dependencies = [
+    "uipath-langchain>=0.5.0",
+    "langgraph>=0.2.0",
+    "langchain-core>=0.3.0",
+    "pydantic>=2.0.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = [
+    "python-dotenv>=1.0.0",
+]

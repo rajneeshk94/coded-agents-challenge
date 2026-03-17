@@ -1,0 +1,189 @@
+﻿▶ START 
+HTTP Request: GET https://cloud.uipath.com/recmetjvpf/DefaultTenant/agenthub_/llm/api/capabilities "HTTP/1.1 200 OK"
+HTTP Request: POST https://cloud.uipath.com/recmetjvpf/DefaultTenant/agenthub_/llm/api/chat/completions "HTTP/1.1 200 OK"
+●
+ 
+classify
+state
+├── 
+email_subject
+: 
+System down!
+├── 
+email_body
+: 
+Everything is broken.
+├── 
+sender
+: 
+221401052@rajalakshmi.edu.in
+├── 
+category
+: 
+urgent
+├── 
+draft_reply
+: 
+├── 
+escalation_note
+: 
+├── 
+reasoning
+: 
+The subject and body indicate a critical issue with the system 
+│   
+being down, requiring immediate attention.
+├── 
+confidence_score
+: 
+0.0
+├── 
+retry_count
+: 
+0
+└── 
+action
+: 
+HTTP Request: POST https://cloud.uipath.com/recmetjvpf/DefaultTenant/agenthub_/llm/api/chat/completions "HTTP/1.1 200 OK"
+●
+ 
+escalate
+state
+├── 
+email_subject
+: 
+System down!
+├── 
+email_body
+: 
+Everything is broken.
+├── 
+sender
+: 
+221401052@rajalakshmi.edu.in
+├── 
+category
+: 
+urgent
+├── 
+draft_reply
+: 
+Subject: Immediate Attention Required: System Down
+│   
+│   
+Dear [Name],
+│   
+│   
+Thank you for reaching out. I understand the urgency of the situation and 
+│   
+am here to help. I am sorry for the inconvenience this has caused. Our team
+│   
+is already investigating the issue...
+├── 
+escalation_note
+: 
+The system is down for the client from Rajalakshmi 
+│   
+University, and immediate action is required.
+├── 
+reasoning
+: 
+The subject and body indicate a critical issue with the system 
+│   
+being down, requiring immediate attention.
+├── 
+confidence_score
+: 
+0.95
+├── 
+retry_count
+: 
+0
+└── 
+action
+: 
+escalate
+●
+ 
+output
+state
+├── 
+category
+: 
+urgent
+├── 
+draft_reply
+: 
+Subject: Immediate Attention Required: System Down
+│   
+│   
+Dear [Name],
+│   
+│   
+Thank you for reaching out. I understand the urgency of the situation and 
+│   
+am here to help. I am sorry for the inconvenience this has caused. Our team
+│   
+is already investigating the issue...
+├── 
+escalation_note
+: 
+The system is down for the client from Rajalakshmi 
+│   
+University, and immediate action is required.
+├── 
+reasoning
+: 
+The subject and body indicate a critical issue with the system 
+│   
+being down, requiring immediate attention.
+├── 
+confidence_score
+: 
+0.95
+└── 
+action
+: 
+escalate
+● END
+output
+├── 
+category
+: 
+urgent
+├── 
+action
+: 
+escalate
+├── 
+draft_reply
+: 
+Subject: Immediate Attention Required: System Down
+│   
+│   
+Dear [Name],
+│   
+│   
+Thank you for reaching out. I understand the urgency of the situation and 
+│   
+am here to help. I am sorry for the inconvenience this has caused. Our team
+│   
+is already investigating the issue...
+├── 
+escalation_note
+: 
+The system is down for the client from Rajalakshmi 
+│   
+University, and immediate action is required.
+├── 
+confidence_score
+: 
+0.95
+└── 
+reasoning
+: 
+The subject and body indicate a critical issue with the system 
+    
+being down, requiring immediate attention.
+✓  Successful execution.
+ui

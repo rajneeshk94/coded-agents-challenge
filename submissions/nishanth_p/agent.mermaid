@@ -1,0 +1,25 @@
+flowchart TD
+    START([📨 Email Input]) --> classify
+
+    classify["🔍 Node 1: Classify\nclassify_node\nLLM categorizes email"]
+
+    classify -->|category == urgent| escalate
+    classify -->|category == normal| draft_reply
+    classify -->|category == spam| discard
+
+    draft_reply["✍️ Node 2: Draft Reply\ndraft_reply_node\nGenerates professional reply"]
+    
+    escalate["🚨 Node 3: Escalate\nescalate_node\nDrafts urgent reply +\nescalation note"]
+
+    escalate -->|confidence_score < 0.6\nAND retry_count < 2| escalate
+
+    discard["🗑️ Node 4: Discard\ndiscard_node\nMarks as spam, no reply"]
+
+    draft_reply --> END_NORMAL([📤 Output: draft_reply])
+    escalate    --> END_URGENT([📤 Output: escalate])
+    discard     --> END_SPAM([📤 Output: discard])
+
+    style classify    fill:#4A90D9,color:#fff
+    style draft_reply fill:#27AE60,color:#fff
+    style escalate    fill:#E74C3C,color:#fff
+    style discard     fill:#95A5A6,color:#fff

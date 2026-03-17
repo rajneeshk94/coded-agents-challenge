@@ -1,0 +1,6 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "email_triage_agent": "./main.py:graph"
+  }
+}
