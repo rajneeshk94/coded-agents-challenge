@@ -1,0 +1,181 @@
+{
+    "$schema": "https://cloud.uipath.com/draft/2024-12/entry-point",
+    "$id": "entry-points.json",
+    "entryPoints": [
+        {
+            "filePath": "agent",
+            "uniqueId": "eee23c62-7f7d-4ab2-8b59-53abcbce3db2",
+            "type": "agent",
+            "input": {
+                "type": "object",
+                "properties": {
+                    "action": {
+                        "description": "The AI agent action to evaluate for operational risk.",
+                        "minLength": 1,
+                        "title": "Action",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "Business and technical context describing what the action will do.",
+                        "minLength": 1,
+                        "title": "Description",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "action",
+                    "description"
+                ]
+            },
+            "output": {
+                "type": "object",
+                "properties": {
+                    "action": {
+                        "description": "The evaluated action name.",
+                        "title": "Action",
+                        "type": "string"
+                    },
+                    "risk_level": {
+                        "description": "LOW, MEDIUM, or HIGH.",
+                        "enum": [
+                            "LOW",
+                            "MEDIUM",
+                            "HIGH"
+                        ],
+                        "title": "Risk Level",
+                        "type": "string"
+                    },
+                    "analysis": {
+                        "description": "Structured explanation of the detected risk.",
+                        "title": "Analysis",
+                        "type": "string"
+                    },
+                    "decision": {
+                        "description": "Safe to Execute, Manual Review Recommended, Human Approval Requested, Human Approved, or Human Rejected.",
+                        "title": "Decision",
+                        "type": "string"
+                    },
+                    "task_id": {
+                        "default": "",
+                        "description": "UiPath HITL task id for high-risk approval workflows.",
+                        "title": "Task Id",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "action",
+                    "risk_level",
+                    "analysis",
+                    "decision"
+                ]
+            },
+            "graph": {
+                "nodes": [
+                    {
+                        "id": "__start__",
+                        "name": "__start__",
+                        "type": "__start__",
+                        "subgraph": null,
+                        "metadata": {}
+                    },
+                    {
+                        "id": "action_analyzer",
+                        "name": "action_analyzer",
+                        "type": "node",
+                        "subgraph": null,
+                        "metadata": {}
+                    },
+                    {
+                        "id": "decision_router",
+                        "name": "decision_router",
+                        "type": "node",
+                        "subgraph": null,
+                        "metadata": {}
+                    },
+                    {
+                        "id": "execute_node",
+                        "name": "execute_node",
+                        "type": "node",
+                        "subgraph": null,
+                        "metadata": {}
+                    },
+                    {
+                        "id": "review_node",
+                        "name": "review_node",
+                        "type": "node",
+                        "subgraph": null,
+                        "metadata": {}
+                    },
+                    {
+                        "id": "human_approval_node",
+                        "name": "human_approval_node",
+                        "type": "node",
+                        "subgraph": null,
+                        "metadata": {}
+                    },
+                    {
+                        "id": "wait_for_approval_node",
+                        "name": "wait_for_approval_node",
+                        "type": "node",
+                        "subgraph": null,
+                        "metadata": {}
+                    },
+                    {
+                        "id": "__end__",
+                        "name": "__end__",
+                        "type": "__end__",
+                        "subgraph": null,
+                        "metadata": {}
+                    }
+                ],
+                "edges": [
+                    {
+                        "source": "__start__",
+                        "target": "action_analyzer",
+                        "label": null
+                    },
+                    {
+                        "source": "action_analyzer",
+                        "target": "decision_router",
+                        "label": null
+                    },
+                    {
+                        "source": "decision_router",
+                        "target": "execute_node",
+                        "label": "LOW"
+                    },
+                    {
+                        "source": "decision_router",
+                        "target": "human_approval_node",
+                        "label": "HIGH"
+                    },
+                    {
+                        "source": "decision_router",
+                        "target": "review_node",
+                        "label": "MEDIUM"
+                    },
+                    {
+                        "source": "human_approval_node",
+                        "target": "wait_for_approval_node",
+                        "label": null
+                    },
+                    {
+                        "source": "execute_node",
+                        "target": "__end__",
+                        "label": null
+                    },
+                    {
+                        "source": "review_node",
+                        "target": "__end__",
+                        "label": null
+                    },
+                    {
+                        "source": "wait_for_approval_node",
+                        "target": "__end__",
+                        "label": null
+                    }
+                ]
+            }
+        }
+    ]
+}

@@ -1,5 +1,5 @@
 {
-  "graphs": {
-    "agent": "./main.py:graph"
-  }
+    "graphs": {
+        "agent": "./main.py:graph"
+    }
 }
